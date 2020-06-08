@@ -40,10 +40,10 @@ const CartProvider: React.FC = ({ children }) => {
   }, []);
 
   const storeNewProducts = useCallback(async newProducts => {
-    setProducts(newProducts);
+    setProducts([...newProducts]);
     await AsyncStorage.setItem(
       '@goMarketPlace/cart',
-      JSON.stringify(newProducts),
+      JSON.stringify([...newProducts]),
     );
   }, []);
 
