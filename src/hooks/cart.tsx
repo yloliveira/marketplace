@@ -43,7 +43,7 @@ const CartProvider: React.FC = ({ children }) => {
     setProducts([...newProducts]);
     await AsyncStorage.setItem(
       '@goMarketPlace/cart',
-      JSON.stringify([...newProducts]),
+      JSON.stringify(newProducts),
     );
   }, []);
 
