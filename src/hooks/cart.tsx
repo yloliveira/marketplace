@@ -31,7 +31,7 @@ const CartProvider: React.FC = ({ children }) => {
   useEffect(() => {
     async function loadProducts(): Promise<void> {
       const storedProducts = await AsyncStorage.getItem('@goMarketPlace/cart');
-      if (storedProducts) {
+      if (storedProducts && JSON.parse(storedProducts).length) {
         setProducts(JSON.parse(storedProducts));
       }
     }
