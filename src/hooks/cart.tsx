@@ -39,6 +39,14 @@ const CartProvider: React.FC = ({ children }) => {
     loadProducts();
   }, []);
 
+  const storeNewProducts = useCallback(async newProducts => {
+    setProducts(newProducts);
+    await AsyncStorage.setItem(
+      '@goMarketPlace/cart',
+      JSON.stringify(newProducts),
+    );
+  }, []);
+
   const addToCart = useCallback(async product => {
     const productIndex = products.findIndex(({ id }) => id === product.id);
     let newProducts = products;
@@ -47,11 +55,7 @@ const CartProvider: React.FC = ({ children }) => {
     } else {
       newProducts.push({ ...product, quantity: 1 });
     }
-    setProducts(newProducts);
-    await AsyncStorage.setItem(
-      '@goMarketPlace/cart',
-      JSON.stringify(newProducts),
-    );
+    await storeNewProducts(newProducts);
   }, []);
 
   const increment = useCallback(async id => {
@@ -59,11 +63,7 @@ const CartProvider: React.FC = ({ children }) => {
     let newProducts = products;
     if (productIndex >= 0) {
       newProducts[productIndex].quantity += 1;
-      setProducts(newProducts);
-      await AsyncStorage.setItem(
-        '@goMarketPlace/cart',
-        JSON.stringify(newProducts),
-      );
+      await storeNewProducts(newProducts);
     }
   }, []);
 
