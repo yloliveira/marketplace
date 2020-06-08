@@ -40,8 +40,18 @@ const CartProvider: React.FC = ({ children }) => {
   }, []);
 
   const addToCart = useCallback(async product => {
-    setProducts([...products, product]);
-    await AsyncStorage.setItem('@goMarketPlace/cart', JSON.stringify(products));
+    const productIndex = products.findIndex(({ id }) => id === product.id);
+    let newProducts = products;
+    if (productIndex >= 0) {
+      newProducts[productIndex].quantity += 1;
+    } else {
+      newProducts.push({ ...product, quantity: 1 });
+    }
+    setProducts(newProducts);
+    await AsyncStorage.setItem(
+      '@goMarketPlace/cart',
+      JSON.stringify(newProducts),
+    );
   }, []);
 
   const increment = useCallback(async id => {
