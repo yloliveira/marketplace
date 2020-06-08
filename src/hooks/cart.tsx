@@ -68,7 +68,16 @@ const CartProvider: React.FC = ({ children }) => {
   }, []);
 
   const decrement = useCallback(async id => {
-    // TODO DECREMENTS A PRODUCT QUANTITY IN THE CART
+    const productIndex = products.findIndex(product => product.id === id);
+    let newProducts = products;
+    if (productIndex >= 0) {
+      if (newProducts[productIndex].quantity > 1) {
+        newProducts[productIndex].quantity -= 1;
+      } else {
+        newProducts.splice(productIndex, 1);
+      }
+      await storeNewProducts(newProducts);
+    }
   }, []);
 
   const value = React.useMemo(
